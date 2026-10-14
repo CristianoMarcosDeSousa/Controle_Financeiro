@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lançamentos - Controle Financeiro</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <h2>FINANCEIRO</h2>
+
+            <nav>
+                <a href="{{ url_for('inicio') }}">Dashboard</a>
+                <a href="{{ url_for('pagina_lancamentos') }}" class="ativo">Lançamentos</a>
+                <a href="{{ url_for('pagina_resumo_mensal') }}">Resumo mensal</a>
+            </nav>
+        </aside>
+
+        <main class="conteudo">
+            <header class="cabecalho-lancamentos">
+                <div>
+                    <h1>Meus lançamentos</h1>
+                    <p>Consulte e organize suas receitas e despesas.</p>
+                </div>
+
+                <button
+                    class="botao-novo"
+                    type="button"
+                    id="abrir-modal">
+                    + Novo lançamento
+                </button>
+            </header>
+
+            <section class="tabela-container">
+                <table class="tabela-lancamentos">
+                    <thead>
+                        <tr>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <th>Categoria</th>
+                            <th>Tipo</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for lancamento in lancamentos %}
+                        <tr>
+                            <td>{{ lancamento.descricao }}</td>
+
+                            <td class="valor-tabela {% if lancamento.tipo == 'Receita' %}valor-receita{% else %}valor-despesa{% endif %}">
+                                R$ {{ "%.2f"|format(lancamento.valor) }}
+                            </td>
+
+                            <td>{{ lancamento.categoria }}</td>
+                            <td>{{ lancamento.tipo }}</td>
+
+                            <td class="acoes-lancamento">
+                                <button
+                                    type="button"
+                                    class="botao-editar"
+                                    data-id="{{ lancamento.id }}"
+                                    data-descricao="{{ lancamento.descricao }}"
+                                    data-valor="{{ lancamento.valor }}"
+                                    data-categoria="{{ lancamento.categoria }}"
+                                    data-tipo="{{ lancamento.tipo }}">
+                                    Editar
+                                </button>
+
+                                <form
+                                    action="{{ url_for('rota_excluir_lancamento', id_lancamento=lancamento.id) }}"
+                                    method="POST"
+                                    onsubmit="return confirm('Tem certeza de que deseja excluir este lançamento? Esta ação não pode ser desfeita.');">
+                                    <button type="submit" class="botao-excluir">
+                                        Excluir
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+
+                        {% else %}
+                        <tr>
+                            <td colspan="5">
+                                Nenhum lançamento cadastrado.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <!-- Janela modal -->
+    <div
+        class="modal-fundo"
+        id="modal-fundo"
+        aria-hidden="true">
+
+        <div
+            class="modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="titulo-modal">
+
+            <div class="modal-cabecalho">
+                <div>
+                    <h2 id="titulo-modal">Novo lançamento</h2>
+                    <p id="descricao-modal">
+                        Preencha os dados para registrar uma movimentação.
+                    </p>
+                </div>
+
+                <button
+                    type="button"
+                    class="fechar-modal"
+                    id="fechar-modal"
+                    aria-label="Fechar janela">
+                    &times;
+                </button>
+            </div>
+
+            <form
+                id="form-lancamento"
+                action="{{ url_for('pagina_lancamentos') }}"
+                method="POST">
+
+                <input
+                    type="hidden"
+                    id="id-lancamento"
+                    name="id_lancamento">
+
+                <div class="campo">
+                    <label for="descricao">Descrição</label>
+                    <input
+                        type="text"
+                        id="descricao"
+                        name="descricao"
+                        placeholder="Ex.: Conta de luz"
+                        maxlength="100"
+                        required>
+                </div>
+
+                <div class="campo">
+                    <label for="valor">Valor (R$)</label>
+                    <input
+                        type="number"
+                        id="valor"
+                        name="valor"
+                        placeholder="0.00"
+                        min="0.01"
+                        step="0.01"
+                        required>
+                </div>
+
+                <div class="campo">
+                    <label for="categoria">Categoria</label>
+                    <input
+                        type="text"
+                        id="categoria"
+                        name="categoria"
+                        placeholder="Ex.: Moradia"
+                        maxlength="50"
+                        required>
+                </div>
+
+                <div class="campo">
+                    <label for="tipo">Tipo de lançamento</label>
+                    <select id="tipo" name="tipo" required>
+                        <option value="">Selecione o tipo</option>
+                        <option value="Receita">Receita</option>
+                        <option value="Despesa">Despesa</option>
+                    </select>
+                </div>
+
+                <div class="modal-acoes">
+                    <button
+                        type="button"
+                        class="botao-cancelar"
+                        id="cancelar-modal">
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="botao-salvar"
+                        id="botao-salvar">
+                        Salvar lançamento
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const modalFundo = document.getElementById("modal-fundo");
+        const botaoAbrir = document.getElementById("abrir-modal");
+        const botaoFechar = document.getElementById("fechar-modal");
+        const botaoCancelar = document.getElementById("cancelar-modal");
+        const formulario = document.getElementById("form-lancamento");
+
+        const campoId = document.getElementById("id-lancamento");
+        const campoDescricao = document.getElementById("descricao");
+        const campoValor = document.getElementById("valor");
+        const campoCategoria = document.getElementById("categoria");
+        const campoTipo = document.getElementById("tipo");
+
+        const tituloModal = document.getElementById("titulo-modal");
+        const descricaoModal = document.getElementById("descricao-modal");
+        const botaoSalvar = document.getElementById("botao-salvar");
+
+        function abrirModal() {
+            modalFundo.classList.add("aberto");
+            modalFundo.setAttribute("aria-hidden", "false");
+            campoDescricao.focus();
+        }
+
+        function fecharModal() {
+            modalFundo.classList.remove("aberto");
+            modalFundo.setAttribute("aria-hidden", "true");
+        }
+
+        function prepararNovoLancamento() {
+            formulario.reset();
+            campoId.value = "";
+
+            tituloModal.textContent = "Novo lançamento";
+            descricaoModal.textContent =
+                "Preencha os dados para registrar uma movimentação.";
+            botaoSalvar.textContent = "Salvar lançamento";
+
+            abrirModal();
+        }
+
+        botaoAbrir.addEventListener("click", prepararNovoLancamento);
+
+        document.querySelectorAll(".botao-editar").forEach(function (botao) {
+            botao.addEventListener("click", function () {
+                campoId.value = this.dataset.id;
+                campoDescricao.value = this.dataset.descricao;
+                campoValor.value = this.dataset.valor;
+                campoCategoria.value = this.dataset.categoria;
+                campoTipo.value = this.dataset.tipo;
+
+                tituloModal.textContent = "Editar lançamento";
+                descricaoModal.textContent =
+                    "Altere os dados e salve as modificações.";
+                botaoSalvar.textContent = "Salvar alterações";
+
+                abrirModal();
+            });
+        });
+
+        botaoFechar.addEventListener("click", fecharModal);
+        botaoCancelar.addEventListener("click", fecharModal);
+
+        modalFundo.addEventListener("click", function (evento) {
+            if (evento.target === modalFundo) {
+                fecharModal();
+            }
+        });
+
+        document.addEventListener("keydown", function (evento) {
+            if (
+                evento.key === "Escape" &&
+                modalFundo.classList.contains("aberto")
+            ) {
+                fecharModal();
+            }
+        });
+    </script>
+</body>
+</html>

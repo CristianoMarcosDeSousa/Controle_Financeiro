@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle Financeiro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="layout">
+
+        <aside class="sidebar">
+            <h2>FINANCEIRO</h2>
+
+            <nav>
+                
+                <a href="{{ url_for('inicio') }}" class="ativo">Dashboard</a>
+                <a href="{{ url_for('pagina_lancamentos') }}">Lançamentos</a>
+                <a href="{{ url_for('pagina_resumo_mensal') }}">Resumo mensal</a>
+
+            </nav>
+        </aside>
+
+        <main class="conteudo">
+            <header>
+                <h1>Visão geral</h1>
+                <p>Bem-vindo ao seu controle financeiro.</p>
+            </header>
+
+            <section class="cards">
+                <div class="card saldo">
+                    <p>Saldo atual</p>
+                    <h2>R$ {{ "%.2f"|format(saldo_atual) }}</h2>
+                </div>
+
+                <div class="card receita">
+                    <p>Total de receitas</p>
+                    <h2>R$ {{ "%.2f"|format(total_receitas) }}</h2>
+                </div>
+
+                <div class="card despesa">
+                    <p>Total de despesas</p>
+                    <h2>R$ {{ "%.2f"|format(total_despesas) }}</h2>
+                </div>
+            </section>
+
+            <section class="grafico">
+                <h2>Receitas / Despesas</h2>
+                <p>Comparativo Financeiro</p>
+                <canvas id="meu-grafico"></canvas>
+            </section>
+        </main>
+
+    </div>
+
+    <!-- Dados enviados pelo Flask -->
+    <script id="dados-financeiros" type="application/json">
+        {{ {
+            "receitas": total_receitas,
+            "despesas": total_despesas
+        } | tojson }}
+    </script>
+
+    <!-- Biblioteca do gráfico -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Código do gráfico -->
+    <script>
+        const areaGrafico = document.getElementById("meu-grafico");
+
+        const dadosFinanceiros = JSON.parse(
+            document.getElementById("dados-financeiros").textContent
+        );
+
+        new Chart(areaGrafico, {
+            type: "bar",
+
+            data: {
+                labels: ["Receitas", "Despesas"],
+
+                datasets: [{
+                    label: "Valor em reais",
+
+                    data: [
+                        dadosFinanceiros.receitas,
+                        dadosFinanceiros.despesas
+                    ],
+
+                    backgroundColor: ["#35C99A", "#FF647C"],
+                    barPercentage: 0.45,
+                    categoryPercentage: 0.6
+                }]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                layout: {
+                    padding: {
+                        top: 0,
+                        bottom: 20,
+                        left: 0,
+                        right: 10
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

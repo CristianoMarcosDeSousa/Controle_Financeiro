@@ -1,0 +1,700 @@
+
+body {
+    background-color: #0F111A;
+    color: #F1F1F5;
+    font-family: Arial, sans-serif;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 240px;
+    background-color: #171827;
+    padding: 30px 20px;
+}
+
+.sidebar h2 {
+    color: #B99AFF;
+    margin-bottom: 40px;
+}
+
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sidebar a {
+    color: #A5A8B8;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar a:hover,
+.sidebar a.ativo {
+    background-color: #37304F;
+    color: #FFFFFF;
+}
+.sidebar a:hover{
+    transform: translateX(5px);
+}
+.conteudo {
+    flex: 1;
+    padding: 35px;
+    min-width: 0;
+}
+
+header p,
+.card p {
+    color: #A5A8B8;
+}
+
+header h1 {
+    margin-bottom: 10px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.card {
+    padding: 25px;
+    border-radius: 14px;
+    background-color: #222438;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    border: 1px solid transparent;
+}
+.card:hover{
+    transform: translateY(-5px);
+    border-color: #A783FF;
+}
+.card h2 {
+    margin-top: 15px;
+    font-size: 26px;
+}
+
+.receita {
+    border-left: 4px solid #35C99A;
+}
+
+.despesa {
+    border-left: 4px solid #FF647C;
+}
+
+.saldo {
+    border-left: 4px solid #A783FF;
+}
+
+@media (max-width: 800px) {
+    .sidebar {
+        width: 180px;
+        padding: 20px 12px;
+    }
+
+    .conteudo {
+        padding: 20px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+}
+.grafico{
+    margin-top: 30px;
+    padding: 25px;
+    background-color: #222438;
+    border-radius: 14px;
+    border: 1px solid transparent;
+    height: 380px;
+    position: relative;
+    overflow: hidden;
+}
+.grafico h2 {
+    margin-bottom: 10px;
+}
+.grafico p {
+    color: #A5A8B8;
+}
+.grafico canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+
+
+.tabela-container {
+    margin-top: 30px;
+    padding: 25px;
+    background-color: #222438;
+    border-radius: 14px;
+    overflow-x: auto;
+}
+
+
+.tabela-lancamentos {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+
+.tabela-lancamentos thead {
+    background-color: #2B2E45;
+}
+
+.tabela-lancamentos th {
+    padding: 16px;
+    color: #A783FF;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+
+.tabela-lancamentos td {
+    padding: 18px 16px;
+    border-bottom: 1px solid #34364B;
+    color: #F1F1F5;
+}
+
+
+.tabela-lancamentos tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.tabela-lancamentos tbody tr:hover {
+    background-color: #2B2E45;
+}
+
+
+.tabela-lancamentos tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+.valor-tabela {
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.valor-receita {
+    color: #35C99A !important;
+}
+
+.valor-despesa {
+    color: #FF647C !important;
+}
+
+
+.conteudo {
+    flex: 1;
+    padding: 35px;
+    min-width: 0;
+}
+
+/* Cabeçalho da página de lançamentos */
+.cabecalho-lancamentos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.cabecalho-lancamentos h1 {
+    margin-bottom: 10px;
+}
+
+.cabecalho-lancamentos p {
+    color: #A5A8B8;
+}
+
+/* Botão de novo lançamento */
+.botao-novo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #A783FF;
+    color: #FFFFFF;
+    border: none;
+    padding: 13px 20px;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.botao-novo:hover {
+    background-color: #8F68ED;
+    transform: translateY(-2px);
+}
+
+/* Cartão que contém a tabela */
+.tabela-container {
+    width: 100%;
+    margin-top: 30px;
+    padding: 25px;
+    background-color: #222438;
+    border-radius: 14px;
+    overflow-x: auto;
+}
+
+/* Tabela de lançamentos */
+.tabela-lancamentos {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.tabela-lancamentos thead {
+    background-color: #2B2E45;
+}
+
+.tabela-lancamentos th {
+    padding: 16px;
+    color: #A783FF;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.tabela-lancamentos td {
+    padding: 18px 16px;
+    border-bottom: 1px solid #34364B;
+    color: #F1F1F5;
+}
+
+.tabela-lancamentos tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.tabela-lancamentos tbody tr:hover {
+    background-color: #2B2E45;
+}
+
+.tabela-lancamentos tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Cores dos valores financeiros */
+.valor-tabela {
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.valor-receita {
+    color: #35C99A !important;
+}
+
+.valor-despesa {
+    color: #FF647C !important;
+}
+
+/* Ajustes para telas menores */
+@media (max-width: 800px) {
+    .sidebar {
+        width: 180px;
+        padding: 20px 12px;
+    }
+
+    .conteudo {
+        padding: 20px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .cabecalho-lancamentos {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .tabela-container {
+        padding: 12px;
+    }
+}
+
+@media (max-width: 500px) {
+    .sidebar {
+        width: 130px;
+        padding: 15px 8px;
+    }
+
+    .conteudo {
+        padding: 14px;
+    }
+
+    .cabecalho-lancamentos h1 {
+        font-size: 24px;
+    }
+
+    .botao-novo {
+        width: 100%;
+    }
+}
+
+
+
+/* Fundo escuro atrás da janela */
+.modal-fundo {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(8, 9, 18, 0.78);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Classe que mostra a janela */
+.modal-fundo.aberto {
+    display: flex;
+}
+
+/* Caixa principal */
+.modal {
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background-color: #222438;
+    border: 1px solid #34364B;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+/* Cabeçalho */
+.modal-cabecalho {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.modal-cabecalho h2 {
+    margin-bottom: 8px;
+}
+
+.modal-cabecalho p {
+    color: #A5A8B8;
+    font-size: 14px;
+}
+
+.fechar-modal {
+    background: transparent;
+    color: #A5A8B8;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+/* Campos do formulário */
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.campo label {
+    color: #F1F1F5;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.campo input,
+.campo select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #3A3D55;
+    border-radius: 8px;
+    background-color: #171827;
+    color: #F1F1F5;
+    font-size: 14px;
+    outline: none;
+}
+
+.campo input:focus,
+.campo select:focus {
+    border-color: #A783FF;
+}
+
+/* Botões inferiores */
+.modal-acoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.botao-cancelar,
+.botao-salvar {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.botao-cancelar {
+    background-color: transparent;
+    color: #F1F1F5;
+    border: 1px solid #454860;
+}
+
+.botao-cancelar:hover {
+    background-color: #34364B;
+}
+
+.botao-salvar {
+    background-color: #A783FF;
+    color: #FFFFFF;
+    border: none;
+}
+
+.botao-salvar:hover {
+    background-color: #8F68ED;
+}
+
+@media (max-width: 500px) {
+    .modal {
+        padding: 20px;
+    }
+
+    .modal-acoes {
+        flex-direction: column-reverse;
+    }
+
+    .botao-cancelar,
+    .botao-salvar {
+        width: 100%;
+    }
+}
+
+.filtro-mensal {
+    display: flex;
+    align-items: flex-end;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin: 28px 0;
+    padding: 22px;
+    background-color: #222438;
+    border: 1px solid #34364B;
+    border-radius: 12px;
+}
+
+.filtro-mensal .campo {
+    min-width: 150px;
+    margin-bottom: 0;
+}
+
+.filtro-mensal input,
+.filtro-mensal select {
+    padding: 12px;
+    border: 1px solid #3A3D55;
+    border-radius: 8px;
+    background-color: #171827;
+    color: #F1F1F5;
+}
+
+.cartoes-resumo {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.cartao-mensal {
+    padding: 24px;
+    background-color: #222438;
+    border: 1px solid #34364B;
+    border-radius: 12px;
+}
+
+.cartao-mensal p {
+    color: #A5A8B8;
+    margin-bottom: 14px;
+}
+
+.cartao-mensal h2 {
+    font-size: 24px;
+    overflow-wrap: anywhere;
+}
+
+.observacao-mensal {
+    color: #A5A8B8;
+    margin-top: 22px;
+    font-size: 14px;
+}
+
+@media (max-width: 800px) {
+    .cartoes-resumo {
+        grid-template-columns: 1fr;
+    }
+
+    .filtro-mensal {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .filtro-mensal .campo {
+        width: 100%;
+    }
+}
+
+
+/* Botão Editar da tabela de lançamentos */
+.botao-editar {
+    background-color: #30334a;
+    color: #a78bfa;
+    border: 1px solid #7661c9;
+    border-radius: 6px;
+    padding: 7px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.botao-editar:hover {
+    background-color: #7661c9;
+    color: #ffffff;
+    border-color: #7661c9;
+    transform: translateY(-1px);
+}
+
+.botao-editar:active {
+    transform: translateY(0);
+}
+
+
+/* Ações da tabela: edição e exclusão */
+.acoes-lancamento {
+    white-space: nowrap;
+}
+
+.acoes-lancamento form {
+    display: inline-block;
+    margin: 0;
+}
+
+.botao-editar,
+.botao-excluir {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 12px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease,
+                border-color 0.2s ease, transform 0.2s ease;
+}
+
+.botao-editar {
+    background-color: #30334A;
+    color: #B99AFF;
+    border: 1px solid #7661C9;
+}
+
+.botao-editar:hover {
+    background-color: #7661C9;
+    color: #FFFFFF;
+    transform: translateY(-1px);
+}
+
+.botao-excluir {
+    margin-left: 6px;
+    background-color: #3A2432;
+    color: #FF8294;
+    border: 1px solid #8D4055;
+}
+
+.botao-excluir:hover {
+    background-color: #8D4055;
+    color: #FFFFFF;
+    transform: translateY(-1px);
+}
+
+.botao-editar:focus-visible,
+.botao-excluir:focus-visible,
+.botao-novo:focus-visible,
+.botao-salvar:focus-visible,
+.botao-cancelar:focus-visible {
+    outline: 2px solid #B99AFF;
+    outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+    .tabela-lancamentos th,
+    .tabela-lancamentos td {
+        padding: 12px 10px;
+    }
+
+    .acoes-lancamento form {
+        display: inline-block;
+    }
+
+    .botao-editar,
+    .botao-excluir {
+        padding: 7px 9px;
+    }
+}
+
+
+/* Navegação adaptável em telas pequenas */
+@media (max-width: 600px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: auto;
+        padding: 18px;
+    }
+
+    .sidebar h2 {
+        margin: 0 0 16px;
+    }
+
+    .sidebar nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .sidebar a {
+        padding: 9px 10px;
+        font-size: 14px;
+    }
+
+    .conteudo {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .grafico {
+        height: 320px;
+        padding: 16px;
+    }
+}
